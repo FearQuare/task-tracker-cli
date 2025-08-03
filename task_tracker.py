@@ -1,4 +1,4 @@
-from task_controller import create_task
+from task_controller import create_task, list_tasks
 
 def menu():
     display_text = """Menu:
@@ -31,7 +31,9 @@ if __name__=="__main__":
     print("Welcome to Task-Tracker!\n")
     menu()
     decision = input("Please enter the index of the operation you want to run: ")
-    if decision == '2':
+    if decision == '1':
+        list_tasks()
+    elif decision == '2':
         creating_task()
     else:
         print("Please enter a valid input.")
