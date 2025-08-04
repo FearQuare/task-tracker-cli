@@ -1,4 +1,4 @@
-from task_controller import create_task, list_tasks, update_task
+from task_controller import create_task, list_tasks, update_task, delete_task
 
 def menu():
     """Function to print list of menu items."""
@@ -34,6 +34,11 @@ def updating_task():
     task_id = input("Please enter the id of the task to be updated: ")
     update_task(task_id)
 
+def deleting_task():
+    list_tasks()
+    task_id = input("Please enter the id of the task to be deleted: ")
+    delete_task(task_id)
+
 if __name__=="__main__":
     print("Welcome to Task-Tracker!\n")
     menu()
@@ -44,5 +49,7 @@ if __name__=="__main__":
         creating_task()
     elif decision == '3':
         updating_task()
+    elif decision == '4':
+        deleting_task()
     else:
         print("Please enter a valid input.")

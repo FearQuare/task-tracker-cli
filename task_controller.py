@@ -85,3 +85,14 @@ def update_task(task_id):
             update_task_name(task)
             update_task_status(task)
             register_tasks(tasks)
+
+def delete_task(task_id):
+    tasks = []
+    if path.exists():
+        fetch_tasks(path, tasks)
+        # Remove tasks with matching id
+        tasks = [task for task in tasks if task['id'] != int(task_id)]
+        register_tasks(tasks)
+        print(f"Task {task_id} deleted.")
+    else:
+        print("No tasks.json file found.")
