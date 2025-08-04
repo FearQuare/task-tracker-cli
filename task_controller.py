@@ -5,12 +5,12 @@ from task import Task
 
 path = Path('tasks.json')
 
-def fetch_tasks(path, list):
+def fetch_tasks(path, task_list):
     """Fetches the tasks from a tasks.json to task list."""
     tasks_json = path.read_text()
     tasks = json.loads(tasks_json)
     for task in tasks:
-        list.append(task)
+        task_list.append(task)
 
 def register_tasks(task_list):
     contents = json.dumps(task_list)
