@@ -17,8 +17,7 @@ def creating_task():
     status_text = """Select the status of the task:
     1. To-do
     2. Ongoing
-    3. Completed
-    : """
+    3. Completed: """
     status = input(status_text)
     if status == '1':
         create_task(name, "to-do")
@@ -39,6 +38,14 @@ def deleting_task():
     task_id = input("Please enter the id of the task to be deleted: ")
     delete_task(task_id)
 
+def list_task_by_status():
+    status_text = """Select the status of the tasks to be listed:
+    1. To-do
+    2. Ongoing
+    3. Completed: """
+    status = input(status_text)
+    list_tasks(status)
+
 if __name__=="__main__":
     print("Welcome to Task-Tracker!\n")
     menu()
@@ -51,5 +58,7 @@ if __name__=="__main__":
         updating_task()
     elif decision == '4':
         deleting_task()
+    elif decision == '5':
+        list_task_by_status()
     else:
         print("Please enter a valid input.")

@@ -16,7 +16,7 @@ def register_tasks(task_list):
     contents = json.dumps(task_list)
     path.write_text(contents)
 
-def list_tasks():
+def list_tasks(status = 'all'):
     task_list = []
     if path.exists():
         fetch_tasks(path, task_list)
@@ -24,7 +24,17 @@ def list_tasks():
             print(f"{'ID':<5} | {'Task Name':<35} | {'Status':<12}")
             print("-" * 60)
             for task in task_list:
-                print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                if status == 'all':
+                    print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                elif status == '1':
+                    if task['status'] == 'to-do':
+                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                elif status == '2':
+                    if task['status'] == 'ongoing':
+                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                elif status == '3':
+                    if task['status'] == 'completed':
+                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
         else:
             print("No tasks found.")
     else:
