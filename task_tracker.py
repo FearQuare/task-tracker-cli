@@ -1,6 +1,7 @@
-from task_controller import create_task, list_tasks
+from task_controller import create_task, list_tasks, update_task
 
 def menu():
+    """Function to print list of menu items."""
     display_text = """Menu:
     1. List your current tasks and their status.
     2. Create a task.
@@ -11,6 +12,7 @@ def menu():
     print(display_text)
 
 def creating_task():
+    """Function to manage I/O for task creation."""
     name = input("Name of the task: ")
     status_text = """Select the status of the task:
     1. To-do
@@ -27,6 +29,11 @@ def creating_task():
     else:
         print("Please enter a valid input.")
 
+def updating_task():
+    list_tasks()
+    task_id = input("Please enter the id of the task to be updated: ")
+    update_task(task_id)
+
 if __name__=="__main__":
     print("Welcome to Task-Tracker!\n")
     menu()
@@ -35,5 +42,7 @@ if __name__=="__main__":
         list_tasks()
     elif decision == '2':
         creating_task()
+    elif decision == '3':
+        updating_task()
     else:
         print("Please enter a valid input.")

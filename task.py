@@ -3,7 +3,6 @@ class Task:
         self.__id = id
         self.__name = name
         self.__status = status
-        #print("in task",self.__name,self.__status)
     
     def get_name(self):
         return self.__name
