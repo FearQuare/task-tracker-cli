@@ -21,10 +21,6 @@ A simple command-line tool for tracking your tasks. You can add, update, delete,
    python3 -m venv venv
    source venv/bin/activate
    ```
-4. Install any required dependencies (if any):
-   ```sh
-   pip install -r requirements.txt
-   ```
 
 ## Usage
 Run the CLI using:
