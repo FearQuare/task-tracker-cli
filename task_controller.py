@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import datetime
 import json
 
 from task import Task
@@ -21,20 +22,20 @@ def list_tasks(status):
     if path.exists():
         fetch_tasks(path, task_list)
         if task_list:
-            print(f"{'ID':<5} | {'Task Name':<35} | {'Status':<12}")
-            print("-" * 60)
+            print(f"{'ID':<5} | {'Task Name':<35} | {'Status':<12} | {'Create Date':<26} | {'Update Date':<26}" )
+            print("-" * 120)
             for task in task_list:
                 if status == 'todo':
                     if task['status'] == 'to-do':
-                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12} | {task['create-date']:<15} | {task['update-date']:<15}")
                 elif status == 'in-progress':
                     if task['status'] == 'in progress':
-                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12} | {task['create-date']:<15} | {task['update-date']:<15}")
                 elif status == 'done':
                     if task['status'] == 'done':
-                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                        print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12} | {task['create-date']:<15} | {task['update-date']:<15}")
                 else:
-                    print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                    print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12} | {task['create-date']:<15} | {task['update-date']:<15}")
         else:
             print("No tasks found.")
     else:
@@ -51,13 +52,12 @@ def create_task(task_name):
         id = id + 1
 
     # Creating the task instance.
-    task = Task(id, task_name, "to-do")
+    task = Task(id, task_name, "to-do", datetime.now().isoformat(), datetime.now().isoformat())
     
     # Registering the new task to the tasks.json file.
     new_task = task.to_dict()
     task_list.append(new_task)
     register_tasks(task_list)
-    print(task.get_name(), "task created.")
 
 def update_task(task_id, task_name):
     tasks = []
@@ -69,6 +69,7 @@ def update_task(task_id, task_name):
     for task in tasks:
         if task['id'] == int(task_id):
             task['name'] = task_name
+            task['update-date'] = datetime.now().isoformat()
             register_tasks(tasks)
 
 def delete_task(task_id):
@@ -92,6 +93,7 @@ def mark_in_progress(task_id):
     for task in tasks:
         if task['id'] == int(task_id):
             task['status'] = "in progress"
+            task['update-date'] = datetime.now().isoformat()
             register_tasks(tasks)
 
 def mark_done(task_id):
@@ -104,4 +106,5 @@ def mark_done(task_id):
     for task in tasks:
         if task['id'] == int(task_id):
             task['status'] = "done"
+            task['update-date'] = datetime.now().isoformat()
             register_tasks(tasks)

@@ -1,17 +1,10 @@
 class Task:
-    def __init__(self, id, name, status):
+    def __init__(self, id, name, status, create_date, update_date):
         self.__id = id
         self.__name = name
         self.__status = status
-    
-    def get_name(self):
-        return self.__name
-    
-    def get_status(self):
-        return self.__status
-    
-    def get_id(self):
-        return self.__id
+        self.__create_date = create_date
+        self.__update_date = update_date
     
     def to_dict(self):
-        return {"id": self.__id, "name": self.__name, "status": self.__status}
+        return {"id": self.__id, "name": self.__name, "status": self.__status, "create-date": self.__create_date, "update-date": self.__update_date}
