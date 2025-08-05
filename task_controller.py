@@ -16,7 +16,7 @@ def register_tasks(task_list):
     contents = json.dumps(task_list)
     path.write_text(contents)
 
-def list_tasks(status = 'all'):
+def list_tasks(status):
     task_list = []
     if path.exists():
         fetch_tasks(path, task_list)
@@ -24,24 +24,23 @@ def list_tasks(status = 'all'):
             print(f"{'ID':<5} | {'Task Name':<35} | {'Status':<12}")
             print("-" * 60)
             for task in task_list:
-                if status == 'all':
-                    print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
-                elif status == '1':
+                if status == 'todo':
                     if task['status'] == 'to-do':
                         print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
-                elif status == '2':
-                    if task['status'] == 'ongoing':
+                elif status == 'in-progress':
+                    if task['status'] == 'in progress':
                         print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
-                elif status == '3':
-                    if task['status'] == 'completed':
+                elif status == 'done':
+                    if task['status'] == 'done':
                         print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
+                else:
+                    print(f"{task['id']:<5} | {task['name']:<35} | {task['status']:<12}")
         else:
             print("No tasks found.")
     else:
         print("No tasks.json file found.")
 
-
-def create_task(task_name, task_status):
+def create_task(task_name):
     """Creating new task."""
     task_list = []
     id = 1
@@ -52,7 +51,7 @@ def create_task(task_name, task_status):
         id = id + 1
 
     # Creating the task instance.
-    task = Task(id, task_name, task_status)
+    task = Task(id, task_name, "to-do")
     
     # Registering the new task to the tasks.json file.
     new_task = task.to_dict()
@@ -60,30 +59,7 @@ def create_task(task_name, task_status):
     register_tasks(task_list)
     print(task.get_name(), "task created.")
 
-def update_task_name(task):
-    is_update = input("Do you want to update the task's name? (y/n): ")
-    if is_update == 'y':
-        task['name'] = input("Enter the new name of the task: ")
-
-def update_task_status(task):
-    is_update = input("Do you want to update the task's status? (y/n): ")
-    if is_update == 'y':
-        status_text = """Select the status of the task:
-    1. To-do
-    2. Ongoing
-    3. Completed
-: """
-        status = input(status_text)
-        if status == '1':
-            task['status'] = "to-do"
-        elif status == '2':
-            task['status'] = "ongoing"
-        elif status == '3':
-            task['status'] = "completed"
-        else:
-            print("Please enter a valid input.")
-
-def update_task(task_id):
+def update_task(task_id, task_name):
     tasks = []
     if path.exists():
         fetch_tasks(path, tasks)
@@ -92,8 +68,7 @@ def update_task(task_id):
     
     for task in tasks:
         if task['id'] == int(task_id):
-            update_task_name(task)
-            update_task_status(task)
+            task['name'] = task_name
             register_tasks(tasks)
 
 def delete_task(task_id):
@@ -106,3 +81,27 @@ def delete_task(task_id):
         print(f"Task {task_id} deleted.")
     else:
         print("No tasks.json file found.")
+
+def mark_in_progress(task_id):
+    tasks = []
+    if path.exists():
+        fetch_tasks(path, tasks)
+    else:
+        print("No tasks.json file found.")
+    
+    for task in tasks:
+        if task['id'] == int(task_id):
+            task['status'] = "in progress"
+            register_tasks(tasks)
+
+def mark_done(task_id):
+    tasks = []
+    if path.exists():
+        fetch_tasks(path, tasks)
+    else:
+        print("No tasks.json file found.")
+    
+    for task in tasks:
+        if task['id'] == int(task_id):
+            task['status'] = "done"
+            register_tasks(tasks)

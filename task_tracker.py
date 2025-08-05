@@ -1,64 +1,51 @@
-from task_controller import create_task, list_tasks, update_task, delete_task
+import argparse
+from task_controller import (create_task, update_task, delete_task, mark_in_progress, mark_done, list_tasks)
 
-def menu():
-    """Function to print list of menu items."""
-    display_text = """Menu:
-    1. List your current tasks and their status.
-    2. Create a task.
-    3. Update a task.
-    4. Delete a task.
-    5. List by the status (done, todo, in-progress).\n
-    """
-    print(display_text)
+def main():
+    parser = argparse.ArgumentParser(description="Task Tracker CLI")
+    subparsers = parser.add_subparsers(dest="command")
 
-def creating_task():
-    """Function to manage I/O for task creation."""
-    name = input("Name of the task: ")
-    status_text = """Select the status of the task:
-    1. To-do
-    2. Ongoing
-    3. Completed: """
-    status = input(status_text)
-    if status == '1':
-        create_task(name, "to-do")
-    elif status == '2':
-        create_task(name, "ongoing")
-    elif status == '3':
-        create_task(name, "completed")
+    # Add
+    parser_add = subparsers.add_parser("add", help="Add a new task")
+    parser_add.add_argument("description", type=str, help="Task description")
+
+    # Update
+    parser_update = subparsers.add_parser("update", help="Update a tasks description by its id")
+    parser_update.add_argument("id", type=int, help="Task ID")
+    parser_update.add_argument("description", type=str, help="Task description")
+
+    # Delete
+    parser_delete = subparsers.add_parser("delete", help="Delete a task by its id")
+    parser_delete.add_argument("id", type=int, help="Task ID")
+
+    # Mark in progress
+    parser_inprogress = subparsers.add_parser("mark-in-progress", help="Update task's status to in progress")
+    parser_inprogress.add_argument("id", type=int, help="Task ID")
+
+    # Mark done
+    parser_done = subparsers.add_parser("mark-done", help="Update task's status to done")
+    parser_done.add_argument("id", type=int, help="Task ID")
+
+    parser_list = subparsers.add_parser("list", help="List tasks")
+    parser_list.add_argument("status", nargs="?", choices=["done", "todo", "in-progress"], help="Filter by status")
+
+
+    args = parser.parse_args()
+
+    if args.command == "add":
+        create_task(args.description)
+    elif args.command == "update":
+        update_task(args.id, args.description)
+    elif args.command == "delete":
+        delete_task(args.id)
+    elif args.command == "mark-in-progress":
+        mark_in_progress(args.id)
+    elif args.command == "mark-done":
+        mark_done(args.id)
+    elif args.command == "list":
+        list_tasks(args.status)
     else:
-        print("Please enter a valid input.")
-
-def updating_task():
-    list_tasks()
-    task_id = input("Please enter the id of the task to be updated: ")
-    update_task(task_id)
-
-def deleting_task():
-    list_tasks()
-    task_id = input("Please enter the id of the task to be deleted: ")
-    delete_task(task_id)
-
-def list_task_by_status():
-    status_text = """Select the status of the tasks to be listed:
-    1. To-do
-    2. Ongoing
-    3. Completed: """
-    status = input(status_text)
-    list_tasks(status)
-
-if __name__=="__main__":
-    print("Welcome to Task-Tracker!\n")
-    menu()
-    decision = input("Please enter the index of the operation you want to run: ")
-    if decision == '1':
-        list_tasks()
-    elif decision == '2':
-        creating_task()
-    elif decision == '3':
-        updating_task()
-    elif decision == '4':
-        deleting_task()
-    elif decision == '5':
-        list_task_by_status()
-    else:
-        print("Please enter a valid input.")
+        parser.print_help()
+        
+if __name__ == "__main__":
+    main()
