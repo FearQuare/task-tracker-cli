@@ -12,7 +12,7 @@ A simple command-line tool for tracking your tasks. You can add, update, delete,
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/<your-username>/task-tracker-cli.git
+   git clone https://github.com/FearQuare/task-tracker-cli.git
    cd task-tracker-cli
    ```
 2. Make sure you have Python 3.7+ installed.
